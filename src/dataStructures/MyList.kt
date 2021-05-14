@@ -1,5 +1,6 @@
 package dataStructures
 
+import data.SIMInfo
 import java.util.*
 
 //https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/
@@ -9,7 +10,7 @@ class MyList<T> : MutableList<T> {
     private var last: Node<T>? = null
     override var size = 0
 
-    private class Node<T> constructor(var element: T, var nextItem: Node<T>?)
+    private inner class Node<T> constructor(var element: T, var nextItem: Node<T>?)
 
     constructor()
 
@@ -46,21 +47,20 @@ class MyList<T> : MutableList<T> {
 
     override fun set(index: Int, element: T): T {
         var item = first
-        for (i in 0..index)
-            item = item?.nextItem
+        for (i in 0 until index)
+            item = item!!.nextItem
         val oldElement = item!!.element
         item.element = element
         return oldElement;
     }
 
     override fun add(element: T): Boolean {
-        if (element == null) throw NullPointerException()
         if (size == 0) {
             first = Node(element, first)
             last = first
         } else {
             last!!.nextItem = Node(element, null)
-            last = last?.nextItem
+            last = last!!.nextItem
         }
         size++
         return true
@@ -68,16 +68,22 @@ class MyList<T> : MutableList<T> {
 
     override fun add(index: Int, element: T) {
         if (index > size - 1 || index < 0) throw IndexOutOfBoundsException()
-        if (element == null) throw NullPointerException()
 
         var item = first
-
-        if (index == 0)
-            first = Node(element, item)
-
-        for (i in 0 until index - 1)
-            item = item?.nextItem
-        item!!.nextItem = Node(element, item.nextItem)
+        if (index == 0) {
+            val f = Node(element, first)
+            first = f
+        }
+        else if (index == size - 1) {
+            val l = Node(element, null)
+            last?.nextItem = l
+            last = l
+        }
+        else {
+            for (i in 0 until index - 1)
+                item = item?.nextItem
+            item!!.nextItem = Node(element, item.nextItem)
+        }
         size++
     }
 
@@ -139,18 +145,19 @@ class MyList<T> : MutableList<T> {
 
     override fun remove(element: T): Boolean {
         if (element == first!!.element) {
-            remove(first)
-            return true
-        }
-        else if (element == last!!.element) {
-            remove(last)
+            first = first!!.nextItem
+            size--
             return true
         }
 
         var e = first
         for (i in 0 until size - 1) {
-            if (e!!.nextItem!!.element == element)
-                remove(e).also { return true }
+            if (e!!.nextItem!!.element == element) {
+                e.nextItem = e.nextItem!!.nextItem
+                if (i == size - 2) last = e
+                size--
+                return true
+            }
             e = e.nextItem
         }
         return false
@@ -173,18 +180,19 @@ class MyList<T> : MutableList<T> {
         return item!!.element
     }
 
-    private fun remove(current: Node<T>?) {
-        when(current) {
-            first -> first = first!!.nextItem
-            last -> last = current.also { current!!.nextItem = null }
-            else -> current!!.nextItem = current.nextItem!!.nextItem.also { current.nextItem!!.nextItem = null }
+    fun sort(list: MyList<SIMInfo>) {
+        for (i in 0 until list.size) {
+            println(i)
+            for (j in i + 1 until list.size)
+                if (list[i].simNumber < list[j].simNumber)
+                    list[i] = list[j].also { list[j] = list[i] }
         }
-        size--
     }
 
     override fun clear() {
-        for (i in 0 until size)
-            remove(first)
+        first = null
+        last = null
+        size = 0
     }
 
     override fun toString(): String {

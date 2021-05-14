@@ -1,6 +1,6 @@
 package data
 
-data class SIMController (
+data class SIMInfo (
     val passportNumber: String,
     val simNumber: String,
     val dateOfIssue: String,

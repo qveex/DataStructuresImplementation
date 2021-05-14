@@ -13,6 +13,11 @@ class MyTreeMap <K: Comparable<K>, V> : MutableMap<K, V> {
 
     override fun get(key: K): V? = findKey(key)?.value
 
+    fun get(index: Int): V {
+        val it = TreeIterator(root)
+        return it.arrayOfElements[index]!!.value
+    }
+
     override fun isEmpty(): Boolean = size == 0
 
     override val entries: MutableSet<MutableMap.MutableEntry<K, V>>
