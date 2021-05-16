@@ -1,3 +1,4 @@
+import data.SIM
 import data.SIMInfo
 import dataStructures.*
 import java.util.*
@@ -57,17 +58,7 @@ fun tableTest() {
     println("[JAVA TABLE] Time spent: ${ end - begin } ms\n")
 }
 fun listTest() {
-    val list = MyList<SIMInfo>()
 
-    list.add(SIMInfo("1", "-111","0","0"))
-    list.add(SIMInfo("1", "1","0","0"))
-    list.add(SIMInfo("1", "3","0","0"))
-    list.add(SIMInfo("1", "2","0","0"))
-    list.add(SIMInfo("1", "123","0","0"))
-    list.add(SIMInfo("1", "7","0","0"))
-    list.add(SIMInfo("1", "123","0","0"))
-    list.add(SIMInfo("1", "-22222","0","0"))
-    list.sort(list)
 }
 
 fun TEST() {
@@ -80,29 +71,5 @@ fun TEST() {
 
 fun main() {
 
-    val list = MyList<Int>()
-
-    list.add(1)
-    list.add(2)
-    list.add(3)
-    list.add(4)
-    list.add(5)
-    list.add(6)
-
-    list.remove(2)
-    list.remove(266)
-    list.remove(6)
-    list.remove(1)
-
-    list.add(5)
-    list.add(55)
-    list.remove(5)
-    list.remove(55)
-    list.add(0, 1)
-    list.add(2, 1)
-    list.add(list.size - 1, 6)
-    list.add(1, 7)
-    list.add(0, 8)
-    list.add(list.size - 2, 8)
 
 }
